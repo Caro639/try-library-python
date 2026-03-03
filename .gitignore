@@ -9,7 +9,7 @@ __pycache__/
 .Python
 settings.py
 local_settings.py
-
+mp-id-admin.txt
 # ==========================
 # Environnements virtuels
 # ==========================
