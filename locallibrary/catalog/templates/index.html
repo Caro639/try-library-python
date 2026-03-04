@@ -1,9 +1,22 @@
-{% extends "base_generic.html" %} {% block content %}
+{% extends "base_generic.html" %} {% block title %}
+<title>Bibliothèque en ligne</title>
+{% endblock %} {% block content %}
+
 <h1>Accueil de la bibliothèque locale</h1>
 <p>
   Bienvenue à la bibliothèque locale, un site web développé par
   <em>Mozilla Developer Network</em>!
 </p>
+<p>An UML diagram of the site's Django model structure is shown below.</p>
+
+<div>
+  {% load static %}
+  <img
+    src="{% static 'images/local_library_model_uml.png' %}"
+    alt="My image"
+    width="600px"
+  />
+</div>
 <h2>Contenu dynamique</h2>
 <p>La bibliothèque dispose des enregistrements suivants:</p>
 <ul>
@@ -11,5 +24,9 @@
   <li><strong>Copies:</strong> {{ num_instances }}</li>
   <li><strong>Copies disponibles:</strong> {{ num_instances_available }}</li>
   <li><strong>Auteurs:</strong> {{ num_authors }}</li>
+  <li>
+    <strong>Genres contenant "Horror":</strong> {{ num_genres_with_word }}
+  </li>
+  <li><strong>Titres contenant "le":</strong> {{ num_books_with_word }}</li>
 </ul>
 {% endblock %}
