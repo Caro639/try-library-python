@@ -68,3 +68,12 @@ class BookDetailView(generic.DetailView):
     model = Book
     slug_field = "slug"  # champ dans le modèle
     slug_url_kwarg = "stub"  # nom du paramètre dans l'URL
+
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = 4
+
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
