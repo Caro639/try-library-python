@@ -36,3 +36,34 @@ def index(request):
             "num_books_with_word": num_books_with_word,
         },
     )
+
+
+from django.views import generic
+
+
+class BookListView(generic.ListView):
+    model = Book
+    # context_object_name = (
+    #     "my_book_list"  # your own name for the list as a template variable
+    # )
+    # queryset = Book.objects.filter(title__icontains="le")[
+    #     :5
+    # ]  # Get 5 books containing the title le
+    # template_name = "books/my_arbitrary_template_name_list.html"
+    # Specify your own template name/location
+
+
+def books_by_date(request, year, month, day):
+    books = Book.objects.filter(
+        publish_date__year=year, publish_date__month=month, publish_date__day=day
+    )
+    return render(
+        request, "books_by_date.html", {"books": books, "date": f"{year}/{month}/{day}"}
+    )
+
+
+# views.py
+class BookDetailView(generic.DetailView):
+    model = Book
+    slug_field = "slug"  # champ dans le modèle
+    slug_url_kwarg = "stub"  # nom du paramètre dans l'URL

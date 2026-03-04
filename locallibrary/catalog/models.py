@@ -3,6 +3,7 @@ from django.urls import reverse  # Cette fonction est utilisée pour formater le
 import uuid  # Ce module est nécessaire à la gestion des identifiants unique (RFC 4122) pour les copies des livres
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
+from django.utils.text import slugify
 
 
 # Create your models here.
@@ -91,6 +92,12 @@ class Book(models.Model):
 
     language = models.ForeignKey("Language", on_delete=models.SET_NULL, null=True)
 
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ["title", "author"]
 
@@ -106,7 +113,7 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         """Cette fonction est requise pas Django, lorsque vous souhaitez détailler le contenu d'un objet."""
-        return reverse("book-detail", args=[str(self.id)])
+        return reverse("book-detail", kwargs={"stub": self.slug})
 
 
 from datetime import date
