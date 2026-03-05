@@ -4,6 +4,8 @@ import uuid  # Ce module est nécessaire à la gestion des identifiants unique (
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
 from django.utils.text import slugify
+from django.conf import settings
+from datetime import date
 
 
 # Create your models here.
