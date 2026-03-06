@@ -25,14 +25,22 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'books' %}">Tous les livres</a></li>
             <li><a href="{% url 'authors' %}">Tous les auteurs</a></li>
+            <hr>
             {% if user.is_authenticated %}
             <li>User: {{ user.get_username }}</li>
 
-            {% if perms.catalog.can_mark_returned %}
+            {% if user.is_staff %}
+            <hr>
             <li><strong>-- Staff --</strong></li>
+            {% if perms.catalog.can_mark_returned %}
             <li><a href="{% url 'my-staff' %}">Tous les emprunts</a></li>
             {% endif %}
+            {% if perms.catalog.add_author %}
+            <li><a href="{% url 'author-create' %}">Create author</a></li>
+            {% endif %}
+            {% endif %}
 
+            <hr>
             <li><strong>-- Mon espace --</strong></li>
             <li><a href="{% url 'my-borrowed' %}">Mes emprunts</a></li>
 
