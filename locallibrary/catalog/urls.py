@@ -31,3 +31,9 @@ urlpatterns += [
 urlpatterns += [
     path("staff/", views.LoanedBooksByStaffListView.as_view(), name="my-staff"),
 ]
+
+urlpatterns += [
+    path(
+        "book/<uuid:pk>/renew/", views.renew_book_librarian, name="renew-book-librarian"
+    ),
+]
