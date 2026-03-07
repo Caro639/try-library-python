@@ -1,13 +1,15 @@
 {% extends "base_generic.html" %} {% block content %}
-<h1>Book List</h1>
+<h1>Book List 📚</h1>
 {% if book_list %}
-<ul>
+<div class="mt-4">
+<ul class="list-group">
   {% for book in book_list %}
-  <li>
-    <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> (<a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a>)
+  <li class="list-group-item">
+    <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> (<a href="{% url 'author-detail' book.author.pk %}">Auteur: {{ book.author }}</a>)
   </li>
   {% endfor %}
 </ul>
+</div>
 {% else %}
 <p>There are no books in the library.</p>
 {% endif %} {% endblock %}

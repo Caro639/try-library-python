@@ -1,16 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Livres empruntés</h1>
+  <h1>Livres empruntés 📚</h1>
 
   {% if bookinstance_list %}
-  <ul class="list-unstyled">
+  <ul class="list-unstyled list-group">
     {% for bookinst in bookinstance_list %}
-    <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+    <li class="list-group-item {% if bookinst.is_overdue %}text-danger{% endif %}">
       <a href="{% url 'book-detail' bookinst.book.slug %}">{{ bookinst.book.title }}</a>
       ({{ bookinst.due_back }})
-      {% if user.is_staff %}- ({{ bookinst.borrower }}){% endif %}
-      {% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.pk %}">Renouveler</a>{% endif %}
+      {% if user.is_staff %}- (utilisateur😄 {{ bookinst.borrower }}){% endif %}
+      {% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.pk %}" class="btn btn-warning">Renouveler 📅</a>{% endif %}
     </li>
     {% endfor %}
   </ul>

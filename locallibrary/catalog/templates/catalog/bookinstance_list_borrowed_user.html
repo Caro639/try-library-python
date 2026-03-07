@@ -1,19 +1,19 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Borrowed books</h1>
+    <h1 class="mb-4">Mes livres empruntés 📖</h1>
 
     {% if bookinstance_list %}
-    <ul>
+    <ul class="list-unstyled list-group">
 
       {% for bookinst in bookinstance_list %}
-      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-        <a href="{% url 'book-detail' bookinst.book.slug %}">{{ bookinst.book.title }}</a> ({{ bookinst.due_back }})
+      <li class="list-group-item {% if bookinst.is_overdue %}text-danger{% endif %}">
+        <a href="{% url 'book-detail' bookinst.book.slug %}">{{ bookinst.book.title }}</a> (Date de retour 📅 {{ bookinst.due_back }})
       </li>
       {% endfor %}
     </ul>
 
     {% else %}
-      <p>There are no books borrowed.</p>
+      <p>Vous n'avez pas de livres empruntés 📖.</p>
     {% endif %}
 {% endblock %}

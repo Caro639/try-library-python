@@ -1,13 +1,15 @@
 {% extends "base_generic.html" %} {% block content %}
-<h1>Auteurs</h1>
+<h1>Auteurs 👩‍🏫👨‍🏫</h1>
 {% if author_list %}
-<ul>
+<div class="mt-4">
+<ul class="list-group">
   {% for author in author_list %}
-  <li>
+  <li class="list-group-item">
     <a href="{{ author.get_absolute_url }}">{{ author }}</a>(Date de naissance: {{ author.date_of_birth }})
   </li>
   {% endfor %}
 </ul>
+</div>
 {% else %}
 <p>There are no authors in the library.</p>
 {% endif %} {% endblock %}
