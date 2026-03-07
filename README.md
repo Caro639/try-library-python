@@ -45,7 +45,11 @@ locallibrary/
 │   ├── views.py      # Vues (ListView, DetailView, CRUD, emprunt)
 │   ├── urls.py       # Routes de l'application
 │   ├── forms.py      # Formulaire de renouvellement
-│   └── templates/    # Templates HTML
+│   ├── templates/    # Templates HTML
+│   └── tests/        # Tests automatisés
+│       ├── test_models.py  # Tests des modèles
+│       ├── test_forms.py   # Tests des formulaires
+│       └── test_views.py   # Tests des vues
 ├── templates/
 │   └── registration/ # Templates d'authentification (login, reset password…)
 └── locallibrary/     # Configuration Django
