@@ -104,6 +104,16 @@ class BookModelTest(TestCase):
         ordering = Book._meta.ordering
         self.assertEqual(ordering, ["title", "author"])
 
+    def test_slug_is_generated_on_save(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(book.slug, "book-title")
+
+    def test_slug_is_updated_on_title_change(self):
+        book = Book.objects.get(id=1)
+        book.title = "New Title"
+        book.save()
+        self.assertEqual(book.slug, "new-title")
+
     def test_get_absolute_url(self):
         book = Book.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
