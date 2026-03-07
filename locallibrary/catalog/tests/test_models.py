@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from catalog.models import Author
+from catalog.models import Author, Book
 
 
 class AuthorModelTest(TestCase):
@@ -58,3 +58,50 @@ class AuthorModelTest(TestCase):
         author = Author.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
         self.assertEqual(author.get_absolute_url(), "/catalog/author/1")
+
+
+class BookModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        author = Author.objects.create(first_name="Big", last_name="Bob")
+        Book.objects.create(
+            title="Book Title",
+            author=author,
+            summary="My book summary",
+            isbn="ABCDEFGHIJKLM",
+        )
+
+    def test_title_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field("title").verbose_name
+        self.assertEqual(field_label, "title")
+
+    def test_summary_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field("summary").verbose_name
+        self.assertEqual(field_label, "summary")
+
+    def test_isbn_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field("isbn").verbose_name
+        self.assertEqual(field_label, "ISBN")
+
+    def test_title_max_length(self):
+        book = Book.objects.get(id=1)
+        max_length = book._meta.get_field("title").max_length
+        self.assertEqual(max_length, 200)
+
+    def test_isbn_max_length(self):
+        book = Book.objects.get(id=1)
+        max_length = book._meta.get_field("isbn").max_length
+        self.assertEqual(max_length, 13)
+
+    def test_ordering(self):
+        ordering = Book._meta.ordering
+        self.assertEqual(ordering, ["title", "author"])
+
+    def test_get_absolute_url(self):
+        book = Book.objects.get(id=1)
+        # This will also fail if the urlconf is not defined.
+        self.assertEqual(book.get_absolute_url(), f"/catalog/book/{book.slug}")
