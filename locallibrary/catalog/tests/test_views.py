@@ -428,3 +428,78 @@ class RenewBookInstancesViewTest(TestCase):
             "renewal_date",
             "Invalid date - renewal more than 4 weeks ahead",
         )
+
+
+class CreateAuthorViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create a user
+        test_user1 = User.objects.create_user(
+            username="testuser1", password="1X<ISRUkw+tuK"
+        )
+        test_user1.save()
+        test_user2 = User.objects.create_user(
+            username="testuser2", password="2HJ1vRV0Z&3iD"
+        )
+
+        test_user1.save()
+        test_user2.save()
+
+        permission = Permission.objects.get(name="Can add author")
+        test_user2.user_permissions.add(permission)
+        test_user2.save()
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("author-create"))
+        self.assertRedirects(response, "/accounts/login/?next=/catalog/author/create/")
+
+    def test_redirect_if_logged_in_but_not_correct_permission(self):
+        login = self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
+        response = self.client.get(reverse("author-create"))
+        self.assertEqual(response.status_code, 403)
+
+    def test_logged_in_uses_correct_template(self):
+        login = self.client.login(username="testuser2", password="2HJ1vRV0Z&3iD")
+        response = self.client.get(reverse("author-create"))
+
+        # Check our user is logged in
+        self.assertEqual(str(response.context["user"]), "testuser2")
+        # Check that we got a response "success"
+        self.assertEqual(response.status_code, 200)
+
+        # Check we used correct template
+        self.assertTemplateUsed(response, "catalog/author_form.html")
+
+    def test_form_has_initial_date_of_death(self):
+        self.client.login(username="testuser2", password="2HJ1vRV0Z&3iD")
+        response = self.client.get(reverse("author-create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context["form"].initial["date_of_death"], "11/11/2023"
+        )
+
+    def test_create_author_with_valid_data(self):
+        self.client.login(username="testuser2", password="2HJ1vRV0Z&3iD")
+        response = self.client.post(
+            reverse("author-create"),
+            {
+                "first_name": "Marie",
+                "last_name": "Curie",
+                "date_of_birth": "1867-11-07",
+                "date_of_death": "1934-07-04",
+            },
+        )
+        # Doit rediriger vers la page de détail du nouvel auteur
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Author.objects.filter(last_name="Curie").exists())
+
+    def test_create_author_with_missing_required_field(self):
+        self.client.login(username="testuser2", password="2HJ1vRV0Z&3iD")
+        response = self.client.post(
+            reverse("author-create"),
+            {"first_name": "", "last_name": ""},  # champs requis vides
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"], "first_name", "This field is required."
+        )
