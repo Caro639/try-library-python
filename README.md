@@ -15,6 +15,7 @@ Application web de gestion d'une bibliothèque locale, développée avec Django 
 - Espace personnel : liste des livres empruntés par l'utilisateur connecté
 - Espace staff : liste de tous les emprunts en cours, avec renouvellement de date de retour
 - Gestion des permissions via `is_staff` et les permissions Django (`can_mark_returned`, etc.)
+- Tests automatisés pour les modèles, les vues et les formulaires
 
 ## Stack technique
 
